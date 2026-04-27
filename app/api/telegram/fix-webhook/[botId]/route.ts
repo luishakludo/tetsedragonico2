@@ -6,10 +6,10 @@ export async function GET(
   { params }: { params: Promise<{ botId: string }> }
 ) {
   const { botId } = await params
-  const BASE_URL = process.env.BASE_URL || "https://dragonteste.onrender.com"
-  
+  const BASE_URL = process.env.BASE_URL || "https://testedragon.onrender.com"
+
   const supabase = getSupabase()
-  
+
   // 1. Buscar bot pelo ID do Telegram
   const { data: bot, error: botError } = await supabase
     .from("bots")
@@ -18,10 +18,10 @@ export async function GET(
     .single()
 
   if (!bot?.token) {
-    return NextResponse.json({ 
-      error: "Bot nao encontrado", 
+    return NextResponse.json({
+      error: "Bot nao encontrado",
       botId,
-      botError: botError?.message 
+      botError: botError?.message
     }, { status: 404 })
   }
 
