@@ -4388,26 +4388,7 @@ Escaneie o QR Code ou copie o codigo abaixo:
       }
 
       return
-
-      // Fallback: Get flow nodes
-      const { data: nodes } = await supabase
-        .from("flow_nodes")
-        .select("*")
-        .eq("flow_id", startFlow.id)
-        .order("position", { ascending: true })
-
-      if (nodes && nodes.length > 0) {
-        for (const node of nodes) {
-          await executeNode(botToken, chatId, node, from as Record<string, unknown>)
-          await new Promise(resolve => setTimeout(resolve, 300))
-        }
-      } else {
-        await sendTelegramMessage(botToken, chatId, `Ola! Bem-vindo ao ${bot.name || "bot"}.`)
-      }
-    } else {
-      await sendTelegramMessage(botToken, chatId, `Ola! Bem-vindo ao ${bot.name || "bot"}.`)
     }
-  }
   } catch (error) {
     console.error("[webhook] Error processing:", error)
   }

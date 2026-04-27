@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     // Salvar lead no banco se tiver dados do formulario
     const payerName = payer?.name || "Cliente"
     let leadId: string | null = null
-    
+
     if (payer && (payer.email || payer.name || payer.cpf)) {
       try {
         // Usar service role para bypass RLS
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
           status: "pending",
           created_at: new Date().toISOString(),
         }).select("id").single()
-        
+
         if (leadError) {
           console.error("[v0] Error saving lead:", leadError)
         } else {
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     }
 
     // URL de notificacao para webhook
-    const notificationUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://dragonteste.onrender.com"}/api/payments/webhook/mercadopago`
+    const notificationUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://testedragon.onrender.com"}/api/payments/webhook/mercadopago`
     console.log("[v0] Notification URL:", notificationUrl)
 
     // Criar pagamento PIX via Mercado Pago (sem enviar dados do payer - igual ao bot)
@@ -116,19 +116,19 @@ export async function POST(request: NextRequest) {
           updated_at: new Date().toISOString(),
         }
         console.log("[v0] Payment insert data:", JSON.stringify(paymentInsert))
-        
+
         const { data: insertedPayment, error: paymentError } = await supabase
           .from("payments")
           .insert(paymentInsert)
           .select()
           .single()
-        
+
         if (paymentError) {
           console.error("[v0] Payment insert error:", paymentError)
         } else {
           console.log("[v0] Payment saved:", insertedPayment?.id)
         }
-        
+
         // Atualizar lead com payment_id
         if (leadId) {
           await supabase.from("checkout_leads").update({
