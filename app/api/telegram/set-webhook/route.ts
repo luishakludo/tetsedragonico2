@@ -12,10 +12,10 @@ export async function POST(req: NextRequest) {
 
     // Usa BASE_URL obrigatoriamente - URL da Render
     const baseUrl = process.env.BASE_URL
-    
+
     if (!baseUrl) {
-      return NextResponse.json({ 
-        error: "BASE_URL nao configurada. Configure: https://dragonteste.onrender.com" 
+      return NextResponse.json({
+        error: "BASE_URL nao configurada. Configure: https://testedragon.onrender.com"
       }, { status: 500 })
     }
 
@@ -38,14 +38,14 @@ export async function POST(req: NextRequest) {
     console.log("[v0] Telegram setWebhook result:", result)
 
     if (!result.ok) {
-      return NextResponse.json({ 
-        success: false, 
-        error: result.description || "Failed to set webhook" 
+      return NextResponse.json({
+        success: false,
+        error: result.description || "Failed to set webhook"
       }, { status: 400 })
     }
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       webhookUrl,
       message: "Webhook configurado! Agora adicione o bot em um grupo como admin."
     })
